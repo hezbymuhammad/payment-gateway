@@ -2,7 +2,7 @@ build:
 	go build -o bin/main main.go
 
 coverage:
-	go test -v -race ./... -coverprofile=coverage.out
+	go test -v ./... -coverprofile=coverage.out
 	go tool cover -html=coverage.out -o coverage.html
 
 dep:
