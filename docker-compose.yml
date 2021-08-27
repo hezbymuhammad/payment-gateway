@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  app:
+    image: golang:1.16
+    ports:
+      - 8080:8080
+    working_dir: /app
+    volumes:
+      - home:/root
+      - gocache:/go
+      - .:/app
+
+volumes:
+  home:
+  gocache:
