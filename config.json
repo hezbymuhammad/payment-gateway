@@ -4,7 +4,7 @@
   },
   "database": {
       "driver": "sqlite3",
-      "file": "./payment.db"
+      "file": "./db/payment.db"
   }
 
 }
