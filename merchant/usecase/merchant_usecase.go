@@ -17,7 +17,12 @@ func NewMerchantUsecase(mr domain.MerchantRepository) domain.MerchantUsecase {
 }
 
 func (mu *merchantUsecase) Store(ctx context.Context, m *domain.Merchant) error {
-        return mu.merchantRepo.Store(ctx, m)
+        err := mu.merchantRepo.Store(ctx, m)
+        if err != nil {
+                return err
+        }
+
+        return mu.merchantRepo.InitSetting(ctx, m)
 }
 
 func (mu *merchantUsecase) SetChild(ctx context.Context, mg *domain.MerchantGroup) error {

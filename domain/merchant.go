@@ -21,6 +21,7 @@ type MerchantUsecase interface {
 
 type MerchantRepository interface {
         Store(ctx context.Context, m *Merchant) error
+        InitSetting(ctx context.Context, m *Merchant) error
         SetChild(ctx context.Context, mg *MerchantGroup) error
         IsAuthorizedParent(ctx context.Context, mg *MerchantGroup) (bool, error)
 }

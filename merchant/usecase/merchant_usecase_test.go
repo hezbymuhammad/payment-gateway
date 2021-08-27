@@ -18,6 +18,7 @@ func TestStore(t *testing.T) {
         data := domain.Merchant{Name: "lorem"}
 
         mockRepo.On("Store", mock.Anything, mock.Anything).Return(nil).Once()
+        mockRepo.On("InitSetting", mock.Anything, mock.Anything).Return(nil).Once()
         u := merchantUsecase.NewMerchantUsecase(mockRepo)
 
         err := u.Store(context.TODO(), &data)
@@ -32,6 +33,7 @@ func TestFailedStore(t *testing.T) {
         dummyErr := errors.New("some err")
 
         mockRepo.On("Store", mock.Anything, mock.Anything).Return(dummyErr).Once()
+        mockRepo.On("InitSetting", mock.Anything, mock.Anything).Return(nil).Once()
         u := merchantUsecase.NewMerchantUsecase(mockRepo)
 
         err := u.Store(context.TODO(), &data)

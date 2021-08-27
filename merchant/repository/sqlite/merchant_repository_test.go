@@ -73,6 +73,24 @@ func TestStore(t *testing.T) {
         assert.Equal(t, m.ID, int64(12))
 }
 
+func TestInitSetting(t *testing.T) {
+	db, mock, err := sqlmock.New()
+        if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+
+        m := &domain.Merchant{Name: "lorem"}
+
+        query := regexp.QuoteMeta("INSERT INTO settings(merchant_id, color, payment_type, payment_name) VALUES(?, ?, ?, ?)")
+
+        prep := mock.ExpectPrepare(query)
+        prep.ExpectExec().WithArgs(m.ID, "RED", "CARD", "VISA").WillReturnResult(sqlmock.NewResult(12, 1))
+        mr := merchantRepo.NewMerchantRepository(db)
+
+        err = mr.InitSetting(context.TODO(), m)
+        assert.NoError(t, err)
+}
+
 func TestSetChild(t *testing.T) {
 	db, mock, err := sqlmock.New()
         if err != nil {

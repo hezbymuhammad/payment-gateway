@@ -14,6 +14,20 @@ type MerchantRepository struct {
 	mock.Mock
 }
 
+// InitSetting provides a mock function with given fields: ctx, m
+func (_m *MerchantRepository) InitSetting(ctx context.Context, m *domain.Merchant) error {
+	ret := _m.Called(ctx, m)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, *domain.Merchant) error); ok {
+		r0 = rf(ctx, m)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // IsAuthorizedParent provides a mock function with given fields: ctx, mg
 func (_m *MerchantRepository) IsAuthorizedParent(ctx context.Context, mg *domain.MerchantGroup) (bool, error) {
 	ret := _m.Called(ctx, mg)
