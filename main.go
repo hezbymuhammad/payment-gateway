@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	"log"
 
 	"github.com/labstack/echo"
 	_ "github.com/mattn/go-sqlite3"
@@ -26,8 +26,10 @@ func init() {
 }
 
 func main() {
-	dbDriver = viper.GetString("database.driver")
-	dbFile = viper.GetString("database.file")
+	dbDriver := viper.GetString("database.driver")
+	dbFile := viper.GetString("database.file")
+	log.Println("database driver: " + dbDriver)
+	log.Println("database file: " + dbFile)
 	dbConn, err := sql.Open(dbDriver, dbFile)
 	if err != nil {
 		log.Fatal(err)
@@ -36,12 +38,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func() {
-		err := dbConn.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}()
 
 	e := echo.New()
 

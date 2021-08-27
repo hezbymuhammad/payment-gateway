@@ -3,6 +3,7 @@ package sqlite
 import (
 	"context"
         "database/sql"
+        "log"
 
 	"github.com/hezbymuhammad/payment-gateway/domain"
 )
@@ -22,6 +23,8 @@ func (tr *sqliteTransactionRepo) GetByID(ctx context.Context, id int64) (domain.
 
         rows, err := tr.DB.Query(query, id)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return domain.Transaction{}, err
         }
         defer rows.Close()
@@ -38,6 +41,8 @@ func (tr *sqliteTransactionRepo) GetByID(ctx context.Context, id int64) (domain.
                 &rawStatus,
         )
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return domain.Transaction{}, err
         }
 
@@ -46,21 +51,27 @@ func (tr *sqliteTransactionRepo) GetByID(ctx context.Context, id int64) (domain.
         return data, nil
 }
 func (tr *sqliteTransactionRepo) Store(ctx context.Context, t *domain.Transaction) error {
-        query := "INSERT transactions SET merchant_id=?, parent_merchant_id=?, setting_id=?, status=?"
+        query := "INSERT INTO transactions (merchant_id, parent_merchant_id, setting_id, status) values (?, ?, ?, ?)"
 
         stmt, err := tr.DB.PrepareContext(ctx, query)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 
         status := btoi(t.Status)
         res, err := stmt.ExecContext(ctx, t.MerchantID, t.ParentMerchantID, t.SettingID, status)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 
         lastID, err := res.LastInsertId()
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 
@@ -74,11 +85,15 @@ func (tr *sqliteTransactionRepo) Update(ctx context.Context, t *domain.Transacti
 
         stmt, err := tr.DB.PrepareContext(ctx, query)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 
         _, err = stmt.ExecContext(ctx, t.MerchantID, t.ParentMerchantID, t.SettingID, t.Status, t.ID)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 

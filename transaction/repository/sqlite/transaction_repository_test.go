@@ -65,7 +65,7 @@ func TestStoreSuccess(t *testing.T) {
                 SettingID: 1,
                 Status: false,
         }
-        query := regexp.QuoteMeta("INSERT transactions SET merchant_id=?, parent_merchant_id=?, setting_id=?, status=?")
+        query := regexp.QuoteMeta("INSERT INTO transactions (merchant_id, parent_merchant_id, setting_id, status) values (?, ?, ?, ?)")
 
         prep := mock.ExpectPrepare(query)
         prep.ExpectExec().WithArgs(data.MerchantID, data.ParentMerchantID, data.SettingID, 0).WillReturnResult(sqlmock.NewResult(12, 1))

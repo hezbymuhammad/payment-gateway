@@ -3,6 +3,7 @@ package sqlite
 import (
 	"context"
         "database/sql"
+        "log"
 
 	"github.com/hezbymuhammad/payment-gateway/domain"
 )
@@ -22,6 +23,8 @@ func (mr *sqliteMerchantRepo) IsAuthorizedParent(ctx context.Context, mg *domain
 
         rows, err := mr.DB.Query(query, mg.ParentMerchantID, mg.ChildMerchantID)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return false, err
         }
         defer rows.Close()
@@ -37,20 +40,26 @@ func (mr *sqliteMerchantRepo) IsAuthorizedParent(ctx context.Context, mg *domain
 }
 
 func (mr *sqliteMerchantRepo) Store(ctx context.Context, m *domain.Merchant) error {
-        query := "INSERT merchants SET name=?"
+        query := "INSERT INTO merchants(name) VALUES(?)"
 
         stmt, err := mr.DB.PrepareContext(ctx, query)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 
         res, err := stmt.ExecContext(ctx, m.Name)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 
         lastID, err := res.LastInsertId()
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 
@@ -59,15 +68,19 @@ func (mr *sqliteMerchantRepo) Store(ctx context.Context, m *domain.Merchant) err
 }
 
 func (mr *sqliteMerchantRepo) SetChild(ctx context.Context, mg *domain.MerchantGroup) error {
-        query := "INSERT INTO merchant_groups SET parent_merchant_id=?, child_merchant_id=?"
+        query := "INSERT INTO merchant_groups(parent_merchant_id, child_merchant_id) VALUES(?, ?)"
 
         stmt, err := mr.DB.PrepareContext(ctx, query)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 
         _, err = stmt.ExecContext(ctx, mg.ParentMerchantID, mg.ChildMerchantID)
         if err != nil {
+                log.Println(query)
+                log.Println(err)
                 return err
         }
 

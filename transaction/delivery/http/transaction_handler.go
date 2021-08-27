@@ -4,6 +4,7 @@ import (
         "fmt"
 	"net/http"
         "strconv"
+        "log"
 
 	"github.com/labstack/echo"
 
@@ -72,6 +73,7 @@ func (h *TransactionHandler) Update(c echo.Context) error {
 
 func (h *TransactionHandler) GetByID(c echo.Context) error {
         idP, err := strconv.Atoi(c.Param("id"))
+        log.Println(c.Param("id"))
         if err != nil {
 		return c.JSON(http.StatusNotFound, ResponseError{Message: "Not found"})
 	}

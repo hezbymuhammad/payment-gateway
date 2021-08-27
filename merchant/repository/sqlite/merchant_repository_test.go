@@ -62,7 +62,7 @@ func TestStore(t *testing.T) {
 
         m := &domain.Merchant{Name: "lorem"}
 
-        query := regexp.QuoteMeta("INSERT merchants SET name=?")
+        query := regexp.QuoteMeta("INSERT INTO merchants(name) VALUES(?)")
 
         prep := mock.ExpectPrepare(query)
         prep.ExpectExec().WithArgs(m.Name).WillReturnResult(sqlmock.NewResult(12, 1))
@@ -79,7 +79,7 @@ func TestSetChild(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 
-        query := regexp.QuoteMeta("INSERT INTO merchant_groups SET parent_merchant_id=?, child_merchant_id=?")
+        query := regexp.QuoteMeta("INSERT INTO merchant_groups(parent_merchant_id, child_merchant_id) VALUES(?, ?)")
 
         prep := mock.ExpectPrepare(query)
         prep.ExpectExec().WithArgs(1, 2).WillReturnResult(sqlmock.NewResult(12, 1))
