@@ -9,7 +9,7 @@ type Transaction struct {
 	MerchantID        int64    `json:"merchantId"`
 	ParentMerchantID  int64    `json:"parentMerchantId"`
 	SettingID         int64    `json:"settingId"`
-        Status            bool    `json:"status"`
+        Status            bool     `json:"status"`
 }
 
 type TransactionUsecase interface {

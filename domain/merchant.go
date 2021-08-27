@@ -10,8 +10,8 @@ type Merchant struct {
 }
 
 type MerchantGroup struct {
-	ParentMerchantID         int64      `json:"parent_merchant_id"`
-	ChildMerchantID          int64      `json:"child_merchant_id"`
+	ParentMerchantID         int64      `json:"parentMerchantId"`
+	ChildMerchantID          int64      `json:"childMerchantId"`
 }
 
 type MerchantUsecase interface {
